@@ -1,0 +1,11 @@
+version: '3.4'
+services:
+  adminer:
+    ports:
+      - 8010:8888
+
+  nginx:
+    ports:
+     - 8000:80 #This maps servers :80 to your localhost:8000
+     - 8001:443
+
