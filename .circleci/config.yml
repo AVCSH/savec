@@ -1,0 +1,79 @@
+dependencies:
+  cache_directories:
+    - ~/.composer/cache
+
+version: 2
+jobs:
+  composer-cache:
+    working_directory: /src
+    docker:
+      - image: avcsh/savec-php-dev
+    steps:
+      - checkout
+      - restore_cache:
+          key: savec-composer-{{ checksum "composer.lock" }}-{{ checksum "composer.json" }}
+
+      - run:
+          name: composer install
+          command: |
+            composer install --dev --no-interaction
+
+      - save_cache:
+          key: savec-composer-{{ checksum "composer.lock" }}-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+
+
+  code-style:
+    docker:
+      - image: avcsh/savec-php-dev
+    steps:
+      - checkout
+      - restore_cache:
+          key: savec-composer-{{ checksum "composer.lock" }}-{{ checksum "composer.json" }}
+
+      - run:
+          name: composer install
+          command: |
+            composer install --dev --no-interaction
+
+      - run:
+          name: Code style checker
+          command: |
+            /root/.composer/vendor/bin/ecs check \
+            --config coding-standard.neon \
+            src tests
+
+  phpstan:
+    docker:
+      - image: avcsh/savec-php-dev
+    steps:
+      - checkout
+      - restore_cache:
+          key: savec-composer-{{ checksum "composer.lock" }}-{{ checksum "composer.json" }}
+          
+      - run:
+          name: composer install
+          command: |
+            composer install --dev --no-interaction
+
+      - run:
+          name: phpstan
+          command: |
+            /root/.composer/vendor/bin/phpstan analyse \
+            --level 7 \
+            --memory-limit 1G \
+            --configuration phpstan.neon \
+            src tests
+
+workflows:
+  version: 2
+  code_style_test:
+    jobs:
+      - composer-cache
+      - code-style:
+          requires:
+            - composer-cache
+      - phpstan:
+          requires:
+            - composer-cache
