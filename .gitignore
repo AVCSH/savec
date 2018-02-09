@@ -7,3 +7,5 @@
 ###< symfony/framework-bundle ###
 
 /docker-compose.override.yml
+
+.php_cs.cache
