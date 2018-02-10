@@ -14,7 +14,7 @@ class Event
 	 * @var UuidInterface
 	 *
 	 * @ORM\Id
-	 * @ORM\Column(type="uuid", unique=true)
+	 * @ORM\Column(type="Uuid", unique=true)
 	 */
 	protected $id;
 
@@ -32,6 +32,12 @@ class Event
 	 * @ORM\Column(type="string")
 	 */
 	protected $description;
+
+	/**
+	 * @var EventType
+	 * @ORM\ManyToOne(targetEntity="EventType")
+	 */
+	protected $eventType;
 
 
 	/** 
@@ -54,5 +60,19 @@ class Event
 	 */
 	public function setTitle(string $title): void {
 		$this->title = $title;
+	}
+
+	/**
+	 * @return EventType
+	 */
+	public function getEventType(): EventType {
+		return $this->eventType;
+	}
+
+	/**
+	 * @param EventType $eventType
+	 */
+	public function setEventType(EventType $eventType): void {
+		$this->eventType = $eventType;
 	}
 }
