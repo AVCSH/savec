@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,41 +25,31 @@ class EventType
 
 	/**
 	 * @var string|null
-	 * @ORM\Column(type="string", nullable=true)
+	 * @ORM\Column(type="string", nullable=true, length=512)
 	 */
 	protected $comment;
 
-	/**
-	 * @param string $name
-	 * */
-	public function __construct(string $name) {
+	public function __construct(string $name, ?string $comment = null) {
 		$this->name = $name;
+		$this->comment = $comment;
 	}
 
-	/**
-	 * @return string
-	 */
+	public function getId(): int {
+		return $this->id;
+	}
+
 	public function getName(): string {
 		return $this->name;
 	}
 
-	/**
-	 * @param string $name
-	 */
 	public function setName(string $name): void {
 		$this->name = $name;
 	}
 
-	/**
-	 * @return null|string
-	 */
 	public function getComment(): ?string {
 		return $this->comment;
 	}
 
-	/**
-	 * @param null|string $comment
-	 */
 	public function setComment(?string $comment): void {
 		$this->comment = $comment;
 	}

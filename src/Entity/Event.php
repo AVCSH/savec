@@ -29,7 +29,7 @@ class Event
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="text")
 	 */
 	protected $description;
 
@@ -39,39 +39,28 @@ class Event
 	 */
 	protected $eventType;
 
-
-	/** 
-	 * ItemType constructor
-	 *
-	 */
-	public function __construct() {
+	public function __construct(string $title, EventType $eventType) {
 		$this->id = Uuid::uuid4();
+		$this->title = $title;
+		$this->eventType = $eventType;
 	}
 
-	/**
-	 * @return string
-	 */
+	public function getId(): UuidInterface {
+		return $this->id;
+	}
+
 	public function getTitle(): string {
 		return $this->title;
 	}
 
-	/**
-	 * @param string $title
-	 */
 	public function setTitle(string $title): void {
 		$this->title = $title;
 	}
 
-	/**
-	 * @return EventType
-	 */
 	public function getEventType(): EventType {
 		return $this->eventType;
 	}
 
-	/**
-	 * @param EventType $eventType
-	 */
 	public function setEventType(EventType $eventType): void {
 		$this->eventType = $eventType;
 	}
