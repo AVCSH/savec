@@ -15,7 +15,7 @@ class ItemType
 	 * @var UuidInterface
 	 *
 	 * @ORM\Id
-	 * @ORM\Column(type="Uuid", unique=true)
+	 * @ORM\Column(type="guid", unique=true)
 	 */
 	protected $id;
 
