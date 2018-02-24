@@ -8,6 +8,8 @@ jobs:
     working_directory: /src
     docker:
       - image: avcsh/savec-php-dev
+        environment:
+          APP_ENV: test
     steps:
       - checkout
       - restore_cache:
@@ -27,6 +29,8 @@ jobs:
   code-style:
     docker:
       - image: avcsh/savec-php-dev
+        environment:
+          APP_ENV: test
     steps:
       - checkout
       - restore_cache:
@@ -47,6 +51,8 @@ jobs:
   phpstan:
     docker:
       - image: avcsh/savec-php-dev
+        environment:
+          APP_ENV: test
     steps:
       - checkout
       - restore_cache:
@@ -66,6 +72,44 @@ jobs:
             --configuration phpstan.neon \
             src tests
 
+  database:
+    docker:
+      - image: avcsh/savec-php-dev
+        environment:
+          APP_ENV: test
+          DATABASE_URL: postgresql://savec:savec@localhost:5432/savec
+
+      - image: postgres:10.2-alpine
+        environment:
+          POSTGRES_PASSWORD: savec
+          POSTGRES_USER: savec
+          POSTGRES_DB: savec
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: savec-composer-{{ checksum "composer.lock" }}-{{ checksum "composer.json" }}
+
+      - run:
+          name: composer install
+          command: |
+            composer install --dev --no-interaction
+
+      - run:
+          name: Doctrine validate mapping files
+          command:
+            php bin/console doctrine:schema:validate --skip-sync
+
+      - run:
+          name: Execute migrations
+          command:
+            php bin/console doctrine:migrations:migrate -n -vv --allow-no-migration
+
+      - run:
+          name: Doctrine validate schema sync with DB
+          command:
+            php bin/console doctrine:schema:validate --skip-mapping
+
 workflows:
   version: 2
   code_style_test:
@@ -75,5 +119,8 @@ workflows:
           requires:
             - composer-cache
       - phpstan:
+          requires:
+            - composer-cache
+      - database:
           requires:
             - composer-cache
