@@ -1,4 +1,5 @@
 parameters:
+	indentation: tab
 	exclude_files:
 		- src/Kernel.php
 
@@ -20,7 +21,14 @@ checkers:
 	- PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer
 	# File name should match class name if possible.
 	- PhpCsFixer\Fixer\Basic\Psr4Fixer
-
+	# File ends with newline
+	- PHP_CodeSniffer\Standards\PSR2\Sniffs\Files\EndFileNewlineSniff
+	# Return types checker
+	- SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff
+	# Function oppening brace on same line
+	- PHP_CodeSniffer\Standards\Generic\Sniffs\Functions\OpeningFunctionBraceKernighanRitchieSniff
+	# Reports errors if the same class or interface name is used in multiple files.
+	- PHP_CodeSniffer\Standards\Generic\Sniffs\Classes\DuplicateClassNameSniff
 
 	# File Header
 
@@ -38,6 +46,8 @@ checkers:
 	SlevomatCodingStandard\Sniffs\Namespaces\UnusedUsesSniff:
 		searchAnnotations: yes
 
+	- PHP_CodeSniffer\Standards\PSR2\Sniffs\Classes\ClassDeclarationSniff
+
 	# Language Construct (should be placed before some other fixers)
 
 	# Functions should be used with `$strict` param set to `true`
@@ -51,7 +61,8 @@ checkers:
 	- PhpCsFixer\Fixer\Operator\StandardizeNotEqualsFixer
 	# Include/Require and file path should be divided with a single space. File path should not be placed under brackets.
 	- PhpCsFixer\Fixer\ControlStructure\IncludeFixer
-
+	# Checks that control structures have the correct spacing around brackets.
+	- PHP_CodeSniffer\Standards\PSR2\Sniffs\ControlStructures\ControlStructureSpacingSniff
 	# Arrays
 
 	# use short array fixes
@@ -192,6 +203,13 @@ checkers:
 
 
 	- SlevomatCodingStandard\Sniffs\Types\EmptyLinesAroundTypeBracesSniff
+	#Doctrine
+	- PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixer
+	- PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationIndentationFixer
+	- PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixer
+	- PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixer
+
+
 	- SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff
 	- SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff
 	- SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff
