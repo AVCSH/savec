@@ -24,6 +24,7 @@ services:
       APP_ENV: dev
       APP_SECRET: 62b197d90141c2d3b55e3cd69ad28b0
       DATABASE_URL: postgresql://savec:savec@db:5432/savec
+      DATABASE_TEST_URL: postgresql://savec:savec@db:5432/savec_test
     volumes:
       - .:/src:cached
       - ~/.composer/auth.json:/root/.composer/auth.json
