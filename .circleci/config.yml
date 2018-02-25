@@ -143,7 +143,7 @@ jobs:
       - run:
           name: Run PHPUnit
           command: |
-            php bin/phpunit --log-junit ~/phpunit/junit.xml
+            php vendor/bin/phpunit --log-junit ~/phpunit/junit.xml
 
       - store_test_results:
           path: ~/phpunit
