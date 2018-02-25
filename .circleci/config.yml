@@ -77,7 +77,7 @@ jobs:
       - image: avcsh/savec-php-dev
         environment:
           APP_ENV: test
-          DATABASE_URL: postgresql://savec:savec@localhost:5432/savec
+          DATABASE_TEST_URL: postgresql://savec:savec@localhost:5432/savec
 
       - image: postgres:10.2-alpine
         environment:
@@ -97,18 +97,63 @@ jobs:
 
       - run:
           name: Doctrine validate mapping files
-          command:
+          command: |
             php bin/console doctrine:schema:validate --skip-sync
 
       - run:
           name: Execute migrations
-          command:
+          command: |
+            php bin/console doctrine:database:create --if-not-exists
             php bin/console doctrine:migrations:migrate -n -vv --allow-no-migration
 
       - run:
           name: Doctrine validate schema sync with DB
-          command:
+          command: |
             php bin/console doctrine:schema:validate --skip-mapping
+
+  phpunit:
+    docker:
+      - image: avcsh/savec-php-dev
+        environment:
+          APP_ENV: test
+          DATABASE_TEST_URL: postgresql://savec:savec@localhost:5432/savec
+
+      - image: postgres:10.2-alpine
+        environment:
+          POSTGRES_PASSWORD: savec
+          POSTGRES_USER: savec
+          POSTGRES_DB: savec
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: savec-composer-phpunit-{{ checksum "composer.lock" }}-{{ checksum "composer.json" }}
+
+      - run:
+          name: composer install
+          command: |
+            composer install --dev --no-interaction
+
+      - run:
+          name: Execute migrations
+          command: |
+            php bin/console doctrine:database:create --if-not-exists
+            php bin/console doctrine:migrations:migrate -n -vv --allow-no-migration
+
+      - run:
+          name: Run PHPUnit
+          command: |
+            php vendor/bin/phpunit --log-junit ~/phpunit/junit.xml
+
+      - store_test_results:
+          path: ~/phpunit
+      - store_artifacts:
+          path: ~/phpunit
+
+      - save_cache:
+          key: savec-composer-phpunit-{{ checksum "composer.lock" }}-{{ checksum "composer.json" }}
+          paths:
+            - vendor
 
 workflows:
   version: 2
@@ -124,3 +169,9 @@ workflows:
       - database:
           requires:
             - composer-cache
+      - phpunit:
+          requires:
+            - code-style
+            - phpstan
+            - database
+
