@@ -72,19 +72,6 @@ jobs:
             --configuration phpstan.neon \
             src tests
 
-  database:
-    docker:
-      - image: avcsh/savec-php-dev
-        environment:
-          APP_ENV: test
-          DATABASE_TEST_URL: postgresql://savec:savec@localhost:5432/savec
-
-      - image: postgres:10.2-alpine
-        environment:
-          POSTGRES_PASSWORD: savec
-          POSTGRES_USER: savec
-          POSTGRES_DB: savec
-
     steps:
       - checkout
       - restore_cache:
@@ -166,12 +153,8 @@ workflows:
       - phpstan:
           requires:
             - composer-cache
-      - database:
-          requires:
-            - composer-cache
       - phpunit:
           requires:
             - code-style
             - phpstan
-            - database
 

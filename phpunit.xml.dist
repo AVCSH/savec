@@ -14,7 +14,6 @@
         <env name="APP_DEBUG" value="1" />
         <env name="APP_SECRET" value="s$cretf0rt3st" />
         <env name="SHELL_VERBOSITY" value="-1" />
-		<server name="IS_DOCTRINE_ORM_SUPPORTED" value="true" />
     </php>
 
     <testsuites>
@@ -29,7 +28,4 @@
         </whitelist>
     </filter>
 
-    <listeners>
-		<listener class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener" />
-	</listeners>
 </phpunit>
