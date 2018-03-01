@@ -24,6 +24,7 @@ class ChangeEquipmentName extends Command
 	) {
 		$this->equipmentId = $equipmentId;
 		$this->name = $name;
+		$this->init();
 	}
 
 	/**

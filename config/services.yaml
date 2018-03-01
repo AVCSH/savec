@@ -27,6 +27,15 @@ services:
         resource: '../src/Command'
         tags: ['console.command']
 
+    App\Entity\Equipment\Command\ChangeEquipmentNameHandler:
+        tags:
+            - { name: 'prooph_service_bus.main_command_bus.route_target', message_detection: true }
+
+    App\Entity\Equipment\Command\RegisterEquipmentHandler:
+        tags:
+            - { name: 'prooph_service_bus.main_command_bus.route_target', message_detection: true }
+
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

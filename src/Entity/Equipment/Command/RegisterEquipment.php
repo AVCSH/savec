@@ -24,6 +24,7 @@ class RegisterEquipment extends Command
 	) {
 		$this->equipmentId = EquipmentId::fromString($equipmentId);
 		$this->name = $name;
+		$this->init();
 	}
 
 	/**
