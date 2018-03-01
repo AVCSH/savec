@@ -7,7 +7,7 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        public: false       # Allows optimizing the container by removing unused services; this also means
+        public: false      # Allows optimizing the container by removing unused services; this also means
                             # fetching services directly from the container via $container->get() won't work.
                             # The best practice is to be explicit about your dependencies anyway.
 
@@ -15,25 +15,34 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{Tests}'
+        exclude: '../src/{Tests,Entity}'
+
+    App\Entity\Equipment\:
+        resource: '../src/Entity/Equipment'
+        exclude: '../src/Entity/Equipment/{Command}'
+        public: true
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+        public: true
 
     App\Command\:
         resource: '../src/Command'
         tags: ['console.command']
+        public: true
 
     App\Entity\Equipment\Command\ChangeEquipmentNameHandler:
         tags:
             - { name: 'prooph_service_bus.main_command_bus.route_target', message_detection: true }
+        public: true
 
     App\Entity\Equipment\Command\RegisterEquipmentHandler:
         tags:
             - { name: 'prooph_service_bus.main_command_bus.route_target', message_detection: true }
+        public: true
 
 
     # add more service definitions when explicit configuration is needed
@@ -45,3 +54,9 @@ services:
             $commandBus: '@prooph_service_bus.main_command_bus'
 
     App\Command\ListEquipmentCommand:
+
+    App\Entity\Equipment\EquipmentRepositoryInterface: '@App\Repository\EquipmentRepository'
+
+    App\Repository\EquipmentRepository:
+      arguments:
+        $eventStore: '@prooph_event_store.main_store'
