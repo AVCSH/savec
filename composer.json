@@ -10,7 +10,14 @@
         "symfony/framework-bundle": "^4.0",
         "symfony/lts": "^4@dev",
         "symfony/maker-bundle": "^1.0",
-        "symfony/yaml": "^4.0"
+        "symfony/yaml": "^4.0",
+		"doctrine/doctrine-bundle": "^1.6",
+		"doctrine/doctrine-cache-bundle": "^1.2",
+		"prooph/event-sourcing": "^5.2",
+		"prooph/event-store-bus-bridge": "^3.0",
+		"prooph/event-store-symfony-bundle": "^0.4",
+		"prooph/pdo-event-store": "^1.0",
+		"prooph/service-bus-symfony-bundle": "^0.6"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0",
