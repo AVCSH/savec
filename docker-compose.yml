@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: savec
       POSTGRES_DB: savec
     volumes:
-      - pgsql-data:/var/lib/postgresql/data
+      - pgsql-data-prooph:/var/lib/postgresql/data
     expose:
       - 5432
 
@@ -39,4 +39,4 @@ services:
      - php
 
 volumes:
-    pgsql-data: ~
+    pgsql-data-prooph: ~

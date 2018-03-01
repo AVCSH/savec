@@ -1,4 +1,10 @@
 prooph_service_bus:
-#  command_buses:
-#
-#  event_buses:
+    command_buses:
+        main_command_bus:
+            router:
+                type: 'prooph_service_bus.command_bus_router'
+
+    event_buses:
+        main_event_bus:
+            router:
+                type: 'prooph_service_bus.command_bus_router'
