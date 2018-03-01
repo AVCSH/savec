@@ -3,8 +3,8 @@ parameters:
 
 doctrine:
     dbal:
-        driver: 'pdo_sql'
-        server_version: '5.7'
-        charset: utf8mb4
+        driver: 'pdo_pgsql'
+        server_version: '10.2'
+        charset: utf8
 
         url: '%env(resolve:DATABASE_URL)%'

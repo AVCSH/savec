@@ -7,4 +7,4 @@ prooph_service_bus:
     event_buses:
         main_event_bus:
             router:
-                type: 'prooph_service_bus.command_bus_router'
+                type: 'prooph_service_bus.event_bus_router'

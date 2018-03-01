@@ -23,5 +23,16 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    App\Command\:
+        resource: '../src/Command'
+        tags: ['console.command']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+
+    App\Command\RegisterEquipmentCommand:
+        arguments:
+            $commandBus: '@prooph_service_bus.main_command_bus'
+
+    App\Command\ListEquipmentCommand:

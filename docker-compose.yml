@@ -8,6 +8,7 @@ services:
       POSTGRES_DB: savec
     volumes:
       - pgsql-data-prooph:/var/lib/postgresql/data
+      - ./vendor/prooph/pdo-event-store/scripts/postgres:/docker-entrypoint-initdb.d
     expose:
       - 5432
 
